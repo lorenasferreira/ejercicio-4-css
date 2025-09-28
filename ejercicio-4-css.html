@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Tile Grid Replica</title>
+    <style>
+        /* ====== Page basics ====== */
+        :root {
+            --page-bg: #0b0e14;
+            /* page background */
+            --card-bg: #0f1320;
+            /* board background */
+            --gap: 14px;
+            /* space between tiles */
+            --radius: 14px;
+            /* rounded corners for tiles */
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body /* { height: 100%; } This makes the <html> element (the root) and the <body> element
+(the page content) take up the full height of the browser window */
+        body {
+            margin: 0; /* Browsers give the <body> some default margin (usually ~8px). This removes it so
+the content can align with the screen edges */
+            display: grid; /* turns the body into a CSS Grid container */
+            place-items: center; /* center the board exactly in the middle of the screen */
+            background: radial-gradient(1200px 600px at 20% -20%, #17203a 0%, transparent 60%) var(--page-bg);
+            font-family: system-ui, sans-serif;
+        }
+
+        /* ====== Board (the dark rounded container) ====== */
+        .board {
+/* On small screens is smaller, so it shrinks nicely. On desktops, it stops growing so it doesn’t become
+too wide */
+            width: min(420px, 92vw);
+/* Fills the board with a dark background color (a bit lighter than the page background) */
+            background: var(--card-bg);
+            padding: calc(var(--gap) + 6px); /* Adds inner space around the grid, so the first/last
+tiles don’t touch the edges */ 
+            border-radius: 22px; /* Rounds the corners of the whole board */
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, .45), /* an outer shadow */
+                inset 0 1px 0 rgba(255, 255, 255, .05); /* an inner highlight */
+        }
+
+        /* ====== Grid of tiles ====== */
+        .grid {
+            display: grid;
+            /* 6 × 6 just like the reference image */
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--gap);
+        }
+
+        /* On very small screens, give a tiny bit more breathing room */
+        @media (max-width: 360px) {
+            .board {
+                width: 95vw; /* On very small screens, the board stretches to 95% of the viewport width */
+            }
+
+            :root {
+                --gap: 10px;
+            }
+        }
+
+        /* ====== Individual tile ====== */
+        .tile {
+            aspect-ratio: 1;
+            /* perfect squares without fixed height */
+            border-radius: var(--radius);
+/* Color is computed with HSL using 2 custom properties: --h (hue) and --l (lightness).
+Saturation fixed at ~80%. We set --h and --l inline on each tile in the HTML below. */
+            background: hsl(var(--h) 80% var(--l));
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .10),
+                inset 0 -1px 0 rgba(0, 0, 0, .35),
+                0 8px 18px rgba(0, 0, 0, .25);
+            /* Smooth hover lift */
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .tile:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .12),
+                inset 0 -1px 0 rgba(0, 0, 0, .38),
+                0 14px 28px rgba(0, 0, 0, .3);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Dark rounded container that holds the grid -->
+    <div class="board">
+        <!-- 6×6 grid. Each tile defines hue (--h) and lightness (--l).
+         Hues sweep Blue → Purple → Pink → Red from left to right.
+         Lightness darkens slightly from top to bottom. -->
+        <div class="grid">
+            <!-- Row 1 (lighter) -->
+            <div class="tile" style="--h:235; --l:62%"></div>
+            <div class="tile" style="--h:255; --l:62%"></div>
+            <div class="tile" style="--h:275; --l:62%"></div>
+            <div class="tile" style="--h:295; --l:62%"></div>
+            <div class="tile" style="--h:330; --l:62%"></div>
+            <div class="tile" style="--h:350; --l:62%"></div>
+
+            <!-- Row 2 -->
+            <div class="tile" style="--h:235; --l:58%"></div>
+            <div class="tile" style="--h:255; --l:58%"></div>
+            <div class="tile" style="--h:275; --l:58%"></div>
+            <div class="tile" style="--h:295; --l:58%"></div>
+            <div class="tile" style="--h:330; --l:58%"></div>
+            <div class="tile" style="--h:350; --l:58%"></div>
+
+            <!-- Row 3 -->
+            <div class="tile" style="--h:235; --l:54%"></div>
+            <div class="tile" style="--h:255; --l:54%"></div>
+            <div class="tile" style="--h:275; --l:54%"></div>
+            <div class="tile" style="--h:295; --l:54%"></div>
+            <div class="tile" style="--h:330; --l:54%"></div>
+            <div class="tile" style="--h:350; --l:54%"></div>
+
+            <!-- Row 4 -->
+            <div class="tile" style="--h:235; --l:50%"></div>
+            <div class="tile" style="--h:255; --l:50%"></div>
+            <div class="tile" style="--h:275; --l:50%"></div>
+            <div class="tile" style="--h:295; --l:45%"></div>
+            <div class="tile" style="--h:330; --l:50%"></div>
+            <div class="tile" style="--h:350; --l:50%"></div>
+
+            <!-- Row 5 -->
+            <div class="tile" style="--h:235; --l:40%"></div>
+            <div class="tile" style="--h:255; --l:40%"></div>
+            <div class="tile" style="--h:275; --l:40%"></div>
+            <div class="tile" style="--h:295; --l:35%"></div>
+            <div class="tile" style="--h:330; --l:40%"></div>
+            <div class="tile" style="--h:350; --l:40%"></div>
+
+            <!-- Row 6 (darkest) -->
+            <div class="tile" style="--h:235; --l:30%"></div>
+            <div class="tile" style="--h:255; --l:30%"></div>
+            <div class="tile" style="--h:275; --l:30%"></div>
+            <div class="tile" style="--h:295; --l:30%"></div>
+            <div class="tile" style="--h:330; --l:30%"></div>
+            <div class="tile" style="--h:350; --l:30%"></div>
+        </div>
+    </div>
+</body>
+
+</html>
